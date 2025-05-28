@@ -7,6 +7,7 @@ name = "pypi"
 alembic = "*"
 sqlalchemy = "*"
 pytz = "*"
+timedelta = "*"
 
 [dev-packages]
 
