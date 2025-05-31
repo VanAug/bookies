@@ -42,22 +42,18 @@ activities = {
         "action" : actions.add_book
     },
     "5" : {
-        "message" : "Add Borrow Log",
-        "action" : actions.add_borrow_log
-    },
-    "6" : {
         "message" : "Mark as Borrowed.",
         "action" : actions.mark_as_borrowed
     },
-    "7" : {
+    "6" : {
         "message" : "Mark as Returned",
         "action" : actions.mark_as_returned
     },
-    "8" : {
+    "7" : {
         "message" : "View available books.",
         "action" : actions.get_available_books
     },
-    "9" : {
+    "8" : {
         "message" : "View borrowed books.",
         "action" : actions.get_borrowed_books
     },

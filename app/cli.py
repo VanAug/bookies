@@ -1,33 +1,45 @@
+#!/usr/bin/env python
+from activities import activities, history
+import os
 
-#/usr/bin/env python
-from activities import activities, current_activity, history
+def clear_screen():
+    os.system('cls' if os.name == 'nt' else 'clear')
 
 if __name__ == "__main__":
-    print("Welcome to the book keeping application!!")
-
+    print("Welcome to the Library Management System!")
+    
     while True:
-        working_activities = current_activity if current_activity != None else activities
-
+        clear_screen()
+        working_activities = history[-1] if history else activities
+        
+        # Print menu
+        print("\nMain Menu:")
         for key, value in working_activities.items():
             print(f"{key}. {value['message']}")
-
-        selection = input("\nSelect an option: ")
-
-        if selection == "exit":
+        
+        selection = input("\nSelect an option: ").strip()
+        
+        if selection.lower() == "exit":
             break
-
-        if selection == "0":
-            history.pop()
-            current_activity = None if len(history) == 0 else history[-1]
+            
+        if selection == "0":  
+            if history:
+                history.pop()
             continue
-
-        if selection in activities:
-            if "action" in working_activities[selection]:
-                working_activities[selection]["action"]()
-        
-            if "options" in working_activities[selection]:
-                current_activity = working_activities[selection]["options"]
-                history.append(current_activity)
-        
+            
+        if selection in working_activities:
+            activity = working_activities[selection]
+            
+            if "action" in activity:
+                try:
+                    activity["action"]()
+                    input("\nPress Enter to continue...")
+                except Exception as e:
+                    print(f"❌ Error: {str(e)}")
+                    input("Press Enter to continue...")
+            
+            if "options" in activity:
+                history.append(activity["options"])
         else:
-            print("Please select an option!!!")
+            print("❌ Invalid selection!")
+            input("Press Enter to continue...")
