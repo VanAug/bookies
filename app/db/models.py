@@ -43,8 +43,8 @@ class BorrowLog(BASE):
     __tablename__ = 'borrow_logs'
 
     id = Column(Integer, primary_key=True)
-    book_id = Column(Integer, ForeignKey('books.id'))
-    user_id = Column(Integer, ForeignKey('users.id'))
+    book_id = Column(Integer, ForeignKey('books.id', ondelete='SET NULL'))
+    user_id = Column(Integer, ForeignKey('users.id', ondelete='SET NULL'))
     borrowed_at = Column(DateTime, default=datetime.now())
     returned_at = Column(DateTime, nullable=True)
 

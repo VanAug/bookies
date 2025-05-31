@@ -13,7 +13,8 @@ if __name__ == "__main__":
         working_activities = history[-1] if history else activities
         
         # Print menu
-        print("\nMain Menu:")
+        current_menu = "Main Menu" if not history else "Sub Menu"
+        print(f"\n{current_menu}:")
         for key, value in working_activities.items():
             print(f"{key}. {value['message']}")
         
@@ -22,7 +23,7 @@ if __name__ == "__main__":
         if selection.lower() == "exit":
             break
             
-        if selection == "0":  
+        if selection == "0":  # Go back
             if history:
                 history.pop()
             continue

@@ -86,15 +86,30 @@ eat = pytz.timezone("Africa/Nairobi")
 # Create BorrowLogs with hardcoded random times
 borrow_logs = [
     BorrowLog(book_id=1, user_id=1, borrowed_at=eat.localize(datetime(2024, 4, 1, 10, 0))),
-    BorrowLog(book_id=2, user_id=2, borrowed_at=eat.localize(datetime(2024, 3, 15, 9, 30)), returned_at=eat.localize(datetime(2024, 3, 30, 11, 0))),
-    BorrowLog(book_id=3, user_id=3, borrowed_at=eat.localize(datetime(2024, 3, 1, 14, 0)), returned_at=eat.localize(datetime(2024, 3, 10, 16, 0))),
+    BorrowLog(book_id=2, user_id=2, borrowed_at=eat.localize(datetime(2024, 3, 15, 9, 30)), 
+               returned_at=eat.localize(datetime(2024, 3, 30, 11, 0))),
+    BorrowLog(book_id=3, user_id=3, borrowed_at=eat.localize(datetime(2024, 3, 1, 14, 0)), 
+               returned_at=eat.localize(datetime(2024, 3, 10, 16, 0))),
     BorrowLog(book_id=4, user_id=4, borrowed_at=eat.localize(datetime(2024, 4, 15, 12, 45))),
-    BorrowLog(book_id=5, user_id=5, borrowed_at=eat.localize(datetime(2024, 2, 20, 8, 0)), returned_at=eat.localize(datetime(2024, 3, 5, 9, 0))),
+    BorrowLog(book_id=5, user_id=5, borrowed_at=eat.localize(datetime(2024, 2, 20, 8, 0)), 
+               returned_at=eat.localize(datetime(2024, 3, 5, 9, 0))),
     BorrowLog(book_id=6, user_id=6, borrowed_at=eat.localize(datetime(2024, 4, 10, 10, 15))),
-    BorrowLog(book_id=7, user_id=7, borrowed_at=eat.localize(datetime(2024, 1, 25, 11, 0)), returned_at=eat.localize(datetime(2024, 2, 1, 10, 0))),
+    BorrowLog(book_id=7, user_id=7, borrowed_at=eat.localize(datetime(2024, 1, 25, 11, 0)), 
+               returned_at=eat.localize(datetime(2024, 2, 1, 10, 0))),
     BorrowLog(book_id=8, user_id=8, borrowed_at=eat.localize(datetime(2024, 3, 5, 15, 30))),
-    BorrowLog(book_id=9, user_id=9, borrowed_at=eat.localize(datetime(2024, 2, 14, 9, 45)), returned_at=eat.localize(datetime(2024, 2, 20, 13, 0))),
-    BorrowLog(book_id=10, user_id=10, borrowed_at=eat.localize(datetime(2024, 4, 20, 16, 30)))
+    BorrowLog(book_id=9, user_id=9, borrowed_at=eat.localize(datetime(2024, 2, 14, 9, 45)), 
+               returned_at=eat.localize(datetime(2024, 2, 20, 13, 0))),
+    BorrowLog(book_id=10, user_id=10, borrowed_at=eat.localize(datetime(2024, 4, 20, 16, 30))),
+    BorrowLog(book_id=12, user_id=1, borrowed_at=eat.localize(datetime(2024, 4, 5, 11, 20))),
+    BorrowLog(book_id=14, user_id=3, borrowed_at=eat.localize(datetime(2024, 4, 12, 14, 15))),
+    BorrowLog(book_id=16, user_id=5, borrowed_at=eat.localize(datetime(2024, 4, 3, 9, 30))),
+    BorrowLog(book_id=18, user_id=7, borrowed_at=eat.localize(datetime(2024, 4, 8, 10, 45))),
+    BorrowLog(book_id=20, user_id=9, borrowed_at=eat.localize(datetime(2024, 4, 18, 13, 20))),
+    BorrowLog(book_id=22, user_id=2, borrowed_at=eat.localize(datetime(2024, 4, 7, 15, 10))),
+    BorrowLog(book_id=24, user_id=4, borrowed_at=eat.localize(datetime(2024, 4, 14, 16, 30))),
+    BorrowLog(book_id=26, user_id=6, borrowed_at=eat.localize(datetime(2024, 4, 9, 11, 45))),
+    BorrowLog(book_id=28, user_id=8, borrowed_at=eat.localize(datetime(2024, 4, 6, 12, 15))),
+    BorrowLog(book_id=30, user_id=10, borrowed_at=eat.localize(datetime(2024, 4, 16, 14, 0))),
 ]
 
 # Add and commit

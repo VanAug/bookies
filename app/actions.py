@@ -42,14 +42,22 @@ def view_borrow_logs():
     table.field_names = ["Log ID", "Book", "User", "Borrowed At", "Returned At", "Duration"]
     
     for log in logs:
+        # Safely get book details even if book was deleted
+        book_title = log.book.title if log.book else "[Deleted Book]"
+        
+        # Safely get user details even if user was deleted
+        user_name = log.user.name if log.user else "[Deleted User]"
+        
+        borrowed_at_str = log.borrowed_at.strftime("%Y-%m-%d %H:%M") if log.borrowed_at else "N/A"
+        returned_at_str = log.returned_at.strftime("%Y-%m-%d %H:%M") if log.returned_at else "Not returned"
         duration = str(log.duration) if log.duration else "Not returned"
-        returned_at = log.returned_at.strftime("%Y-%m-%d %H:%M") if log.returned_at else "Not returned"
+        
         table.add_row([
             log.id,
-            log.book.title,
-            log.user.name,
-            log.borrowed_at.strftime("%Y-%m-%d %H:%M"),
-            returned_at,
+            book_title,
+            user_name,
+            borrowed_at_str,
+            returned_at_str,
             duration
         ])
     print(table)
@@ -157,3 +165,119 @@ def get_borrowed_books():
     books = session.query(Book).filter_by(currently_borrowed=True).all()
     print("\nBorrowed Books:")
     _display_books(books)
+
+def delete_user():
+    print("\nDelete User")
+    view_users()
+    user_id = input("Enter user ID to delete: ").strip()
+    
+    try:
+        user_id = int(user_id)
+        user = session.get(User, user_id)
+        
+        if not user:
+            print("❌ User not found")
+            return
+            
+        # Check for active borrows
+        active_borrows = session.query(BorrowLog).filter(
+            BorrowLog.user_id == user_id,
+            BorrowLog.returned_at.is_(None)
+        ).count()
+        
+        if active_borrows > 0:
+            print(f"❌ User has {active_borrows} active borrows. Cannot delete.")
+            return
+            
+        # Check for any borrow history
+        borrow_history = session.query(BorrowLog).filter_by(user_id=user_id).count()
+        if borrow_history > 0:
+            confirm = input(f"⚠️ User has {borrow_history} borrow records. Delete anyway? (y/n): ").lower()
+            if confirm != 'y':
+                print("❌ Deletion canceled")
+                return
+                
+        # Set user_id to NULL in borrow logs
+        session.query(BorrowLog).filter_by(user_id=user_id).update({BorrowLog.user_id: None})
+        session.delete(user)
+        session.commit()
+        print(f"✅ User '{user.name}' deleted successfully")
+    except ValueError:
+        print("❌ Invalid user ID")
+
+def delete_author():
+    print("\nDelete Author")
+    view_authors()
+    author_id = input("Enter author ID to delete: ").strip()
+    
+    try:
+        author_id = int(author_id)
+        author = session.get(Author, author_id)
+        
+        if not author:
+            print("❌ Author not found")
+            return
+            
+        # Check for borrowed books
+        borrowed_books = session.query(Book).filter(
+            Book.author_id == author_id,
+            Book.currently_borrowed == True
+        ).count()
+        
+        if borrowed_books > 0:
+            print(f"❌ Author has {borrowed_books} books currently borrowed. Cannot delete.")
+            return
+            
+        # Check for associated books
+        book_count = session.query(Book).filter_by(author_id=author_id).count()
+        if book_count > 0:
+            confirm = input(f"⚠️ Author has {book_count} books. Delete author and all their books? (y/n): ").lower()
+            if confirm != 'y':
+                print("❌ Deletion canceled")
+                return
+                
+            # Delete books and their borrow logs
+            books = session.query(Book).filter_by(author_id=author_id).all()
+            for book in books:
+                # Delete borrow logs for book
+                session.query(BorrowLog).filter_by(book_id=book.id).delete()
+                session.delete(book)
+                
+        session.delete(author)
+        session.commit()
+        print(f"✅ Author '{author.name}' deleted successfully")
+    except ValueError:
+        print("❌ Invalid author ID")
+
+def delete_book():
+    print("\nDelete Book")
+    view_books()
+    book_id = input("Enter book ID to delete: ").strip()
+    
+    try:
+        book_id = int(book_id)
+        book = session.get(Book, book_id)
+        
+        if not book:
+            print("❌ Book not found")
+            return
+            
+        if book.currently_borrowed:
+            print("❌ Book is currently borrowed. Cannot delete.")
+            return
+            
+        # Check for borrow history
+        borrow_count = session.query(BorrowLog).filter_by(book_id=book_id).count()
+        if borrow_count > 0:
+            confirm = input(f"⚠️ Book has {borrow_count} borrow records. Delete anyway? (y/n): ").lower()
+            if confirm != 'y':
+                print("❌ Deletion canceled")
+                return
+                
+        # Delete associated borrow logs
+        session.query(BorrowLog).filter_by(book_id=book_id).delete()
+        session.delete(book)
+        session.commit()
+        print(f"✅ Book '{book.title}' deleted successfully")
+    except ValueError:
+        print("❌ Invalid book ID")
