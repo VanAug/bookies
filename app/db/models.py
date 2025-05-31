@@ -47,7 +47,6 @@ class BorrowLog(BASE):
     user_id = Column(Integer, ForeignKey('users.id'))
     borrowed_at = Column(DateTime, default=datetime.now())
     returned_at = Column(DateTime, nullable=True)
-    duration = Column(DateTime, nullable=True)
 
     #Relationships
     book = relationship("Book", back_populates="borrow_logs")

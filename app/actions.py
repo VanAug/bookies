@@ -5,8 +5,19 @@ from prettytable import PrettyTable
 
 session = sessionmaker(bind=engine)()
 
+#Helper function to display books
+def _display_books(books):
+    table = PrettyTable()
+    table.field_names = ["ID", "Title", "Genre", "Author", "Borrowed"]
+    for book in books:
+        author_name = book.author.name if book.author else "Unknown"
+        borrowed = "Yes" if book.currently_borrowed else "No"
+        table.add_row([book.id, book.title, book.genre, author_name, borrowed])
+    print(table)
+
 def view_books():
-    print("Books")
+    books = session.query(Book).all()
+    _display_books(books)
 
 def view_users():
     print("users")
