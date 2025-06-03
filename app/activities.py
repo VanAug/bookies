@@ -28,6 +28,15 @@ activities = {
             "2": {"message": "Delete Author", "action": actions.delete_author},
             "3": {"message": "Delete Book", "action": actions.delete_book},
             "0": {"message": "Go Back"}
+        },
+    },
+    "10": {
+        "message": "Search",
+        "options": {
+            "1": {"message": "Search User", "action": actions.find_user},
+            "2": {"message": "Search Author", "action": actions.find_author},
+            "3": {"message": "Search Book", "action": actions.find_book},
+            "0": {"message": "Go Back"}
         }
     },
     "Exit": {"message": "Exit Application"}

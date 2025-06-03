@@ -281,3 +281,89 @@ def delete_book():
         print(f"✅ Book '{book.title}' deleted successfully")
     except ValueError:
         print("❌ Invalid book ID")
+
+
+def find_user():
+    print("\nSearch Users")
+    search_term = input("Enter name to search: ").strip()
+    if not search_term:
+        print("❌ Please enter a search term")
+        return
+        
+    users = session.query(User).filter(User.name.ilike(f"%{search_term}%")).all()
+    
+    if not users:
+        print("❌ No users found")
+        return
+        
+    table = PrettyTable()
+    table.field_names = ["ID", "Name", "Age", "Gender", "Active Borrows", "Past Borrows"]
+    
+    for user in users:
+        # Get active borrows (not returned yet)
+        active_borrows = session.query(BorrowLog).filter(
+            BorrowLog.user_id == user.id,
+            BorrowLog.returned_at.is_(None)
+        ).count()
+        
+        # Get past borrows (already returned)
+        past_borrows = session.query(BorrowLog).filter(
+            BorrowLog.user_id == user.id,
+            BorrowLog.returned_at.isnot(None)
+        ).count()
+        
+        table.add_row([
+            user.id,
+            user.name,
+            user.age,
+            user.gender,
+            active_borrows,
+            past_borrows
+        ])
+    
+    print(table)
+
+def find_author():
+    print("\nSearch Authors")
+    search_term = input("Enter name to search: ").strip()
+    if not search_term:
+        print("❌ Please enter a search term")
+        return
+        
+    authors = session.query(Author).filter(Author.name.ilike(f"%{search_term}%")).all()
+    
+    if not authors:
+        print("❌ No authors found")
+        return
+        
+    table = PrettyTable()
+    table.field_names = ["ID", "Name", "Book Count"]
+    for author in authors:
+        book_count = session.query(Book).filter_by(author_id=author.id).count()
+        table.add_row([author.id, author.name, book_count])
+    print(table)
+
+def find_book():
+    print("\nSearch Books")
+    search_term = input("Enter title, author, or genre: ").strip()
+    if not search_term:
+        print("❌ Please enter a search term")
+        return
+        
+    books = session.query(Book).join(Author).filter(
+        Book.title.ilike(f"%{search_term}%") | 
+        Author.name.ilike(f"%{search_term}%") | 
+        Book.genre.ilike(f"%{search_term}%")
+    ).all()
+    
+    if not books:
+        print("❌ No books found")
+        return
+        
+    table = PrettyTable()
+    table.field_names = ["ID", "Title", "Author", "Genre", "Status"]
+    for book in books:
+        author_name = book.author.name if book.author else "Unknown"
+        status = "Borrowed" if book.currently_borrowed else "Available"
+        table.add_row([book.id, book.title, author_name, book.genre, status])
+    print(table)
