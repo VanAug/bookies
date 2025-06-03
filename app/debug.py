@@ -68,16 +68,16 @@ books = [
 
 # Create Users
 users = [
-    User(name="Alice", age=25, gender="Female"),
-    User(name="Bob", age=34, gender="Male"),
-    User(name="Charlie", age=28, gender="Male"),
-    User(name="Diana", age=22, gender="Female"),
-    User(name="Ethan", age=30, gender="Male"),
-    User(name="Fiona", age=29, gender="Female"),
-    User(name="George", age=31, gender="Male"),
-    User(name="Hannah", age=27, gender="Female"),
-    User(name="Ian", age=35, gender="Male"),
-    User(name="Jane", age=26, gender="Female")
+    User(name="Alice Johnson", age=28, gender="Female"),
+    User(name="Bob Smith", age=32, gender="Male"),
+    User(name="Charlie Brown", age=24, gender="Male"),
+    User(name="Diana Prince", age=35, gender="Female"),
+    User(name="Ethan Hunt", age=40, gender="Male"),
+    User(name="Fiona Gallagher", age=29, gender="Female"),
+    User(name="George Weasley", age=30, gender="Male"),
+    User(name="Hermione Granger", age=27, gender="Female"),
+    User(name="Ian Malcolm", age=45, gender="Male"),
+    User(name="Jane Foster", age=33, gender="Female"),
 ]
 
 # Timezone
